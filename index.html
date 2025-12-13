@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Notes PDF Viewer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for a clean, modern look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex items-start justify-center">
+
+    <div class="w-full max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+                Java Notes PDF Quick-Viewer
+            </h1>
+            <p class="text-gray-600">
+                Select a PDF file and click "Open PDF" to view it directly in the browser.
+            </p>
+        </header>
+
+        <div class="card bg-white rounded-xl p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Document Selection
+            </h2>
+            
+            <!-- File Selection Dropdown: This will be populated by JavaScript -->
+            <label for="file-select" class="block text-sm font-medium text-gray-700 mb-2">Select Java Notes Document:</label>
+            <select id="file-select" class="w-full bg-white border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3 text-sm text-gray-900">
+                <!-- Options will be added here by script -->
+            </select>
+
+            <div class="mt-4">
+                <!-- Button to open the selected PDF in a new tab/window -->
+                <button id="open-btn" class="w-full bg-green-600 text-white font-medium py-3 rounded-lg hover:bg-green-700 transition duration-150 ease-in-out focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    Open PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions/Note Display Card -->
+        <div class="card bg-white rounded-xl p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Usage Note
+            </h2>
+            <div id="results-container" class="bg-yellow-50 p-4 rounded-lg text-gray-800 text-sm">
+                <p class="font-bold mb-1">Important for GitHub Pages:</p>
+                <p>This application uses a pre-defined list of PDF files that were available at creation. For this to work, ensure all 
+                   listed files are located in the **same directory** as this <code>index.html</code> file in your GitHub repository.
+                </p>
+                <p class="mt-2">If you add new PDF files to your repository, you will need to manually edit the list in the script section below.</p>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <script>
+        // List of all PDF files automatically included based on files in the Canvas environment.
+        // NOTE: For a real static GitHub Page, this list must be updated manually.
+        const pdfFiles = [
+            "Core Java guidelines - merged.pdf",
+            "Mastering_Core_Java.pdf"
+            
+        ];
+        
+        // UI Elements
+        const openBtn = document.getElementById('open-btn');
+        const fileSelect = document.getElementById('file-select');
+        
+        /**
+         * Populates the dropdown menu with the files listed in the pdfFiles array.
+         */
+        function populateDropdown() {
+            if (pdfFiles.length === 0) {
+                const option = document.createElement('option');
+                option.textContent = "No PDF files found in the list.";
+                fileSelect.appendChild(option);
+                openBtn.disabled = true;
+                return;
+            }
+
+            pdfFiles.forEach(fileName => {
+                const option = document.createElement('option');
+                option.value = fileName;
+                option.textContent = fileName;
+                fileSelect.appendChild(option);
+            });
+        }
+        
+        /**
+         * Opens the selected file using its relative path in a new browser window.
+         */
+        function openFile() {
+            const selectedFilePath = fileSelect.value;
+            
+            // Use window.open to attempt to navigate to the file path
+            window.open(selectedFilePath, '_blank');
+        }
+
+        // --- Initialization ---
+        // 1. Populate the dropdown on load
+        populateDropdown();
+
+        // 2. Add event listener to the button
+        openBtn.addEventListener('click', openFile);
+
+        console.log("PDF Viewer script loaded. Ready for file selection.");
+        
+    </script>
+</body>
+</html>
